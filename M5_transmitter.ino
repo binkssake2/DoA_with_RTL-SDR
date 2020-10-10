@@ -14,6 +14,18 @@ void setup() {
   }
 }
 
+//////////////////////////////////////////////////
+
+void waitBegin() {
+  M5.Lcd.fillScreen(BLACK);
+  M5.Lcd.setCursor(0, 50);
+  M5.Lcd.print("Press A to begin");
+  while(!M5.BtnA.read()){ delay(150); }
+  while(M5.BtnA.read()){ delay(150); }
+}
+
+//////////////////////////////////////////////////
+
 void sendByteAndWait(int delayMilis) {
     data[0] = random(0, 256);
     driver.send((uint8_t *)data, strlen(data));
@@ -21,18 +33,18 @@ void sendByteAndWait(int delayMilis) {
     delay(delayMilis);
 }
 
-void loop() {
-  M5.Lcd.fillScreen(BLACK);
-  M5.Lcd.setCursor(0, 50);
-  M5.Lcd.print("Press A to begin");
-  while(!M5.BtnA.read()){ delay(150); }
-  while(M5.BtnA.read()){ delay(150); }
-  
+void sendBytes() {
   M5.Lcd.fillScreen(BLACK);
   M5.Lcd.setCursor(0, 50);
   M5.Lcd.print("Transmiting");
   while(!M5.BtnA.read()) { sendByteAndWait(10); }
   while(M5.BtnA.read()){ delay(150); }
-  
+}
+
+//////////////////////////////////////////////////
+
+void loop() {
+  waitBegin();
+  sendBytes();
   M5.update();
 }
